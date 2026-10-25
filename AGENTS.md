@@ -53,6 +53,7 @@ The structure is hub and spoke: home and journal are hubs, articles are spokes, 
 10. **Push** with `git push origin main`.
 11. **Wait** for the `Deploy GitHub Pages` workflow to report success.
 12. **Verify** the live URLs, including `/sitemap.xml`, `/robots.txt`, every `og:image` and the AVIF files.
+13. **Push the changed URLs to IndexNow** so Bing, Yandex, Seznam and Naver recrawl within minutes. Use the IndexNow-ORG skill. Google is not part of IndexNow; use Search Console for Google.
 
 ## 4. Sitemap rules
 
