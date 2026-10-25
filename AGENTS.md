@@ -184,7 +184,7 @@ Site-wide conventions that validation depends on:
 Every page ships this complete head block. A page missing any line below is not publishable.
 
 ```html
-<title>Page title, 50 to 60 characters</title>
+<title>Page title, 45 to 60 characters (about 60 is where Google truncates)</title>
 <meta name="description" content="Unique summary, 120 to 158 characters.">
 <link rel="canonical" href="https://munawarabadullah.github.io/agentic-infrastructure/<slug>/">
 <meta name="robots" content="index,follow,max-image-preview:large">
