@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#060913">
   <meta name="color-scheme" content="dark">
-  <meta name="description" content="A technology thesis by Munawar Abadullah on agentic infrastructure: the six layers, controls and architecture required to turn AI capability into dependable systems.">
+  <meta name="description" content="A technology thesis by Munawar Abadullah on agentic infrastructure: the six layers and controls required to turn AI capability into dependable systems.">
   <meta name="author" content="Munawar Abadullah">
   <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
   <meta name="keywords" content="agentic infrastructure, agentic systems, AI architecture, MCP, AI orchestration, enterprise AI, AI governance, AI evaluation">
@@ -32,286 +32,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      color-scheme:dark;
-      --ink:#060913;
-      --ink-2:#0a1122;
-      --panel:#0e1830;
-      --panel-2:#14203b;
-      --text:#f2f4f8;
-      --muted:#9aa6be;
-      --line:rgba(154,166,190,.18);
-      --line-soft:rgba(154,166,190,.10);
-      --brass:#d9a15b;
-      --brass-wash:rgba(217,161,91,.10);
-      --max:1120px;
-      --serif:"Newsreader",Georgia,"Times New Roman",serif;
-      --sans:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
-      --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
-    }
-
-    *,*::before,*::after{box-sizing:border-box}
-    html{scroll-behavior:smooth;scroll-padding-top:88px;-webkit-text-size-adjust:100%}
-    body{
-      margin:0;
-      background:
-        linear-gradient(180deg,#080e1c 0,#060913 28rem,#060913 100%);
-      color:var(--text);
-      font-family:var(--sans);
-      font-size:clamp(16px,.55vw + 14.6px,17.5px);
-      line-height:1.68;
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
-    }
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0 0 auto 0;
-      height:1px;
-      background:linear-gradient(90deg,transparent,var(--brass),transparent);
-      opacity:.5;
-      pointer-events:none;
-      z-index:60;
-    }
-
-    a{color:inherit;text-decoration:none}
-    p{margin:0 0 1.05em}
-    p:last-child{margin-bottom:0}
-    h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.12;letter-spacing:-.015em;margin:0}
-    figure,dl,dd,ol,ul{margin:0}
-    img,svg{max-width:100%}
-
-    :focus-visible{outline:2px solid var(--brass);outline-offset:4px;border-radius:2px}
-
-    .skip{
-      position:absolute;left:16px;top:-60px;z-index:100;
-      background:var(--brass);color:#0a1122;font-weight:700;
-      padding:12px 18px;border-radius:3px;transition:top .15s ease;
-    }
-    .skip:focus{top:16px}
-
-    .wrap{width:100%;max-width:var(--max);margin:0 auto;padding:0 clamp(20px,5vw,40px)}
-
-    /* ---------- header ---------- */
-    header{
-      position:sticky;top:0;z-index:50;
-      background:rgba(6,9,19,.94);
-      border-bottom:1px solid var(--line-soft);
-      backdrop-filter:saturate(120%) blur(6px);
-    }
-    .nav{
-      display:flex;align-items:center;gap:clamp(16px,3vw,40px);
-      min-height:70px;
-    }
-    .brand{
-      font-family:var(--serif);font-size:1.06rem;letter-spacing:.02em;
-      white-space:nowrap;flex:0 0 auto;
-    }
-    .brand span{color:var(--brass)}
-    .nav-links{
-      display:flex;align-items:center;gap:clamp(14px,2vw,26px);
-      margin-left:auto;min-width:0;
-      overflow-x:auto;overscroll-behavior-x:contain;
-      scrollbar-width:none;
-    }
-    .nav-links::-webkit-scrollbar{display:none}
-    .nav-links a{
-      display:inline-flex;align-items:center;min-height:44px;
-      font-size:.86rem;color:var(--muted);white-space:nowrap;
-      border-bottom:1px solid transparent;transition:color .15s ease,border-color .15s ease;
-    }
-    .nav-links a:hover{color:var(--text);border-bottom-color:var(--brass)}
-    .nav-links .nav-cta{color:var(--brass);font-weight:600}
-
-    /* ---------- hero ---------- */
-    .hero{padding:clamp(56px,9vw,104px) 0 clamp(56px,8vw,88px)}
-    .hero-grid{
-      display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);
-      gap:clamp(36px,6vw,72px);align-items:center;
-    }
-    .eyebrow{
-      font-family:var(--mono);font-size:.72rem;font-weight:500;
-      letter-spacing:.08em;text-transform:uppercase;color:var(--brass);
-      margin-bottom:20px;
-    }
-    h1{font-size:clamp(2.35rem,5.2vw,4.05rem);letter-spacing:-.028em;margin-bottom:26px}
-    h1 em{font-style:italic;color:var(--brass)}
-    .lede{color:var(--muted);max-width:34rem}
-    .lede strong{color:var(--text);font-weight:600}
-    .actions{display:flex;flex-wrap:wrap;gap:12px;margin:32px 0 26px}
-    .button{
-      display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      min-height:46px;padding:0 22px;border-radius:3px;
-      border:1px solid var(--line);
-      font-size:.9rem;font-weight:600;letter-spacing:.01em;
-      transition:border-color .15s ease,background-color .15s ease,color .15s ease;
-    }
-    .button:hover{border-color:var(--brass);background:var(--brass-wash)}
-    .button.primary{background:var(--brass);border-color:var(--brass);color:#0a1122}
-    .button.primary:hover{background:#e4b277;border-color:#e4b277}
-    .micro{
-      font-family:var(--mono);font-size:.7rem;letter-spacing:.09em;
-      text-transform:uppercase;color:var(--muted);opacity:.85;
-    }
-
-    /* stack figure: the six layers, used once as a diagram */
-    .stack{width:100%;border-top:1px solid var(--line)}
-    .stack figcaption{
-      font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;
-      text-transform:uppercase;color:var(--muted);margin-bottom:14px;
-    }
-    .stack ol{list-style:none;margin:0;padding:0}
-    .stack li{
-      display:grid;grid-template-columns:3.2rem 1fr;align-items:baseline;
-      gap:14px;padding:15px 4px;
-      border-bottom:1px solid var(--line-soft);
-    }
-    .stack .n{font-family:var(--mono);font-size:.72rem;color:var(--brass)}
-    .stack .name{font-size:.98rem;font-weight:600}
-    .stack .name small{display:block;font-weight:400;font-size:.8rem;color:var(--muted);margin-top:2px}
-
-    /* ---------- sections ---------- */
-    section{padding:clamp(52px,7vw,84px) 0;border-top:1px solid var(--line-soft)}
-    .sec-head{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin-bottom:44px}
-    h2{font-size:clamp(1.75rem,3.1vw,2.55rem);max-width:24ch}
-    .sec-intro{color:var(--muted);max-width:60ch}
-
-    .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,64px)}
-    .split p{color:var(--muted)}
-    .split p strong{color:var(--text)}
-
-    blockquote{
-      margin:44px 0 0;padding:26px 0 4px 26px;
-      border-left:2px solid var(--brass);
-      font-family:var(--serif);font-size:clamp(1.2rem,2.1vw,1.5rem);
-      line-height:1.45;color:var(--text);max-width:52ch;
-    }
-
-    /* architecture: a numbered list, not a wall of cards */
-    .layers{list-style:none;margin:0;padding:0;display:grid;gap:0}
-    .layers li{
-      display:grid;grid-template-columns:5.5rem minmax(0,1fr);gap:clamp(16px,3vw,40px);
-      padding:26px 0;border-top:1px solid var(--line-soft);
-    }
-    .layers li:first-child{border-top:1px solid var(--line)}
-    .layers .num{
-      font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;
-      color:var(--brass);padding-top:6px;
-    }
-    .layers h3{font-size:1.22rem;margin-bottom:8px}
-    .layers p{color:var(--muted);max-width:64ch;margin-bottom:10px}
-    .meta-line{font-family:var(--mono);font-size:.72rem;color:var(--muted);opacity:.8}
-
-    /* enterprise: term / detail rows, asymmetric by design */
-    .rows{display:grid;gap:0;margin:0}
-    .rows > div{
-      display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.6fr);
-      gap:clamp(16px,4vw,56px);padding:24px 0;border-top:1px solid var(--line-soft);
-    }
-    .rows > div:first-child{border-top:1px solid var(--line)}
-    .rows dt{
-      font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;
-      text-transform:uppercase;color:var(--brass);padding-top:4px;
-    }
-    .rows dd{margin:0}
-    .rows h3{font-size:1.15rem;margin-bottom:6px}
-    .rows p{color:var(--muted);max-width:56ch}
-
-    /* prediction: year gutter timeline */
-    .timeline{display:grid;grid-template-columns:5.5rem minmax(0,1fr);gap:clamp(16px,3vw,40px);padding:24px 0;border-top:1px solid var(--line-soft)}
-    .timeline:first-of-type{border-top:1px solid var(--line)}
-    .year{
-      font-family:var(--mono);font-size:.82rem;letter-spacing:.04em;
-      color:var(--brass);padding-top:4px;
-    }
-    .timeline h3{font-size:1.15rem;margin-bottom:8px}
-    .timeline p{color:var(--muted);max-width:62ch}
-    .quote-meta{font-size:.86rem;color:var(--muted);font-style:italic;margin-top:12px}
-
-    .link-arrow{
-      display:inline-flex;align-items:center;gap:7px;min-height:44px;
-      font-size:.88rem;font-weight:600;color:var(--brass);
-      border-bottom:1px solid transparent;transition:border-color .15s ease;
-    }
-    .link-arrow:hover{border-bottom-color:var(--brass)}
-
-    /* topics: inline catalog rows, not cards */
-    .topics{list-style:none;margin:0;padding:0;display:grid;gap:0}
-    .topics li{
-      display:grid;grid-template-columns:5.5rem minmax(0,1fr);
-      gap:clamp(16px,3vw,40px);padding:18px 0;border-top:1px solid var(--line-soft);
-    }
-    .topics li:first-child{border-top:1px solid var(--line)}
-    .topics h3{font-size:1.05rem;margin-bottom:4px}
-    .topics p{color:var(--muted);margin:0;max-width:58ch}
-
-    /* explore */
-    .explore-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
-    .explore-grid a{
-      display:block;padding:26px 30px 26px 0;border-top:1px solid var(--line);
-      transition:background-color .15s ease;
-    }
-    .explore-grid a + a{padding-left:30px;padding-right:0;border-left:1px solid var(--line-soft)}
-    .explore-grid a:hover{background:rgba(217,161,91,.04)}
-    .explore-grid a:hover h3{color:var(--brass)}
-    .explore-grid h3{font-size:1.35rem;margin-bottom:6px}
-    .explore-grid p{color:var(--muted);margin-bottom:14px}
-    .explore-grid span{
-      font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;
-      text-transform:uppercase;color:var(--brass);
-    }
-
-    .cta-band{
-      margin-top:40px;padding:clamp(24px,4vw,36px);
-      border:1px solid var(--line);border-radius:3px;
-      background:linear-gradient(135deg,var(--panel) 0,var(--ink-2) 100%);
-      display:grid;grid-template-columns:minmax(0,1fr) auto;
-      align-items:center;gap:24px;
-    }
-    .cta-band h3{font-size:1.25rem;margin-bottom:6px}
-    .cta-band p{color:var(--muted);margin:0;max-width:52ch}
-
-    /* ---------- footer ---------- */
-    footer{border-top:1px solid var(--line);padding:34px 0 42px;margin-top:8px}
-    .footer-inner{display:flex;flex-wrap:wrap;gap:18px 32px;align-items:center;justify-content:space-between}
-    .footer-inner > div:first-child{font-size:.84rem;color:var(--muted)}
-    .footer-links{display:flex;flex-wrap:wrap;gap:6px 20px}
-    .footer-links a{font-size:.84rem;color:var(--muted);display:inline-flex;align-items:center;min-height:44px}
-    .footer-links a:hover{color:var(--brass)}
-
-    /* ---------- responsive ---------- */
-    @media (max-width:900px){
-      .hero-grid{grid-template-columns:minmax(0,1fr);gap:44px}
-      .split{grid-template-columns:minmax(0,1fr);gap:8px}
-      .explore-grid{grid-template-columns:minmax(0,1fr)}
-      .explore-grid a + a{padding-left:0;border-left:0}
-      .cta-band{grid-template-columns:minmax(0,1fr)}
-    }
-    @media (max-width:640px){
-      .nav{min-height:62px;gap:12px}
-      .brand{font-size:.98rem}
-      .nav-links{margin-left:0;flex:1 1 auto}
-      .layers li,.topics li,.timeline{grid-template-columns:4.4rem minmax(0,1fr);gap:12px}
-      .rows > div{grid-template-columns:minmax(0,1fr);gap:8px}
-      .stack li{grid-template-columns:2.6rem 1fr}
-      blockquote{padding-left:18px;margin-top:32px}
-      .button{width:100%}
-      .actions{gap:10px}
-    }
-
-    @media (prefers-reduced-motion:reduce){
-      html{scroll-behavior:auto}
-      *{transition:none!important;animation:none!important}
-    }
-
-    @media print{
-      header,body::before,.actions,.nav-cta{display:none}
-      body{background:#fff;color:#111}
-      a{text-decoration:underline}
-      section{break-inside:avoid}
-    }
-  </style>
+  <link rel="stylesheet" href="assets/theme.css">
 
   <script type="application/ld+json">
   {
@@ -353,6 +74,17 @@
           "@type": "Thing",
           "name": "Agentic infrastructure"
         }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Agentic Infrastructure",
+            "item": "https://munawarabadullah.github.io/agentic-infrastructure/"
+          }
+        ]
       }
     ]
   }
@@ -368,8 +100,7 @@
         <a href="#definition">The concept</a>
         <a href="#architecture">Architecture</a>
         <a href="#enterprise">Enterprise</a>
-        <a href="#prediction">2018 prediction</a>
-        <a href="#perspective">Perspective</a>
+        <a href="journal/">Journal</a>
         <a class="nav-cta" href="https://munawarabadullah.com/">Main website ↗</a>
       </nav>
     </div>
@@ -631,6 +362,8 @@
     <div class="wrap footer-inner">
       <div>© <span id="year">2026</span> Munawar Abadullah. All rights reserved.</div>
       <div class="footer-links">
+        <a href="journal/">Journal</a>
+        <a href="site/">Site</a>
         <a href="https://munawarabadullah.com/">Main website</a>
         <a href="https://munawarabadullah.com/nexus">Nexus</a>
         <a href="https://munawarabadullah.com/intelligence">Intelligence</a>
